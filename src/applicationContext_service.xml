@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+    <!--service层会调用dao的对象-->
+    <import resource="classpath:applicationContext_dao.xml"/>
+    <!--注解-->
+    <context:component-scan base-package="service"/>
+
+    <!--事务-->
+    <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <!--//aop 织入的过程，将事务：事务开启，事务提交的增强代码，添加到业务代码上
+    增强的代码，通知
+    事务： 事务的隔离性 屏蔽脏读（默认） 屏蔽不可重复读 屏蔽幻读-->
+    <tx:advice id="txAdvice" transaction-manager="txManager"   >
+        <tx:attributes>
+            <!--连接点（过滤哪些连接的方法，给这些方法添加事务） DEFAULT 数据库默认
+            REQUIRED 开启事务，自动提价
+            业务层给每个方法命名 需要提交的事务，必须以add,update,delete开头-->
+            <tx:method name="add*" isolation="DEFAULT" propagation="REQUIRED" rollback-for="Exception.class"/>
+            <tx:method name="delete*" isolation="DEFAULT" propagation="REQUIRED" rollback-for="Exception.class"/>
+            <tx:method name="update*" isolation="DEFAULT" propagation="REQUIRED" rollback-for="Exception.class"/>
+            <tx:method name="register*" isolation="DEFAULT" propagation="REQUIRED" rollback-for="Exception.class"/>
+            <tx:method name="select*" read-only="true"/>
+        </tx:attributes>
+    </tx:advice>
+    <!--织入的过程-->
+    <aop:config>
+        <aop:pointcut id="pointCut" expression="execution(* service.impl.*Impl.*(..))"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="pointCut"/>
+    </aop:config>
+</beans>

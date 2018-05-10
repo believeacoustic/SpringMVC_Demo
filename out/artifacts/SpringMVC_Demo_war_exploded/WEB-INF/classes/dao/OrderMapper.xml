@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 映射标签   这个sql映射文件对应哪个dao 接口-->
+<mapper namespace="dao.OrderMapper">
+    <!--//    生成订单 订单号自动生成  哪个用户   什么时间购买-->
+    <!--public boolean insertOrder(String  oid,String uname);-->
+    <insert id="insertOrder">
+        insert into tb_order values(#{0},#{1},sysdate)
+
+    </insert>
+
+    <!--//    哪个订单，哪个商品，数量多少-->
+    <!--public boolean insertOrderDetail(String ooid,String oid,String gid,int num);-->
+    <insert id="insertOrderDetail">
+        insert into tb_order_detail values(#{0},#{1},#{2},#{3})
+    </insert>
+</mapper>

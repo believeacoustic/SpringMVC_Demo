@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 映射标签   这个sql映射文件对应哪个dao 接口-->
+<mapper namespace="dao.GoodMapper">
+
+    <!--//    获得所有的商品类别-->
+    <!--public List<GoodCatory> selectCatorys();-->
+
+    <select id="selectCatorys" resultType="GoodCatory">
+        SELECT * from tb_catory
+    </select>
+
+    <!--//    根据商品的类别号，获得该类别号下面的所有商品-->
+    <!--public List<Goods> selectGoodByCatory(String catory);-->
+
+    <select id="selectGoodByCatory" resultType="Goods">
+        SELECT * from tb_good where catory=#{0}
+    </select>
+
+    <!--public Goods selectById(String gid);-->
+    <select id="selectById" resultType="Goods">
+        SELECT * from tb_good where gid=#{0}
+    </select>
+</mapper>

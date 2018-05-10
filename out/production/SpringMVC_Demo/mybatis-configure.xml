@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+        <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+                "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!--告诉mybatis的核心配置文件，数据库的配置在什么properties内-->
+    <!--mybatis的配置修改-->
+    <settings>
+        <!--日志的框架用哪个，默认用的是Commons-->
+        <setting name="logImpl" value="LOG4J"/>
+    </settings>
+
+
+    <!--别名，让实体类的类名替代全类路径，告诉程序哪些实体类可以使用类名去替代全类名-->
+    <typeAliases>
+        <!--以后可以用类名代替全类名-->
+        <!--实体类是放在domain这个包里,domain包里的所有实体类都定义了别名-->
+        <package name="domain"/>
+    </typeAliases>
+    <!--定义自己的转换器-->
+
+
+
+    <mappers>
+        <!--注册sql映射文件.dao包里的xml一起注册-->
+       <package name="dao"/>
+    </mappers>
+</configuration>
